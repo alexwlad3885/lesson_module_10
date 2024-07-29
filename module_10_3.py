@@ -13,37 +13,34 @@ class BankAccount:
         self.account = 1000
 
     def deposit(self, amount):
-        self.account += amount
+        self.amount = amount
+        with lock:
+            self.account += self.amount
+            print(f'Deposited {self.amount}, new balance is {self.account}')
         return self.account
 
     def withdraw(self, amount):
-        self.account -= amount
+        self.amount = amount
+        with lock:
+            self.account -= self.amount
+            print(f'Withdrew {self.amount}, new balance is {self.account}')
         return self.account
 
 
-def deposit_task(*args):
-    amount = args[1]
-    account.account = args[0]
-    for i in range(5):
-        with lock:
-            account.account = account.deposit(amount)
-            print(f'Deposited {amount}, new balance is {account.account}')
+def deposit_task(account, amount):
+    for _ in range(5):
+        account.deposit(amount)
 
 
-def withdraw_task(*args):
-    amount = args[1]
-    if account.account == args[0]:
-        account.account = args[0]
-    for j in range(5):
-        with lock:
-            account.account = account.withdraw(amount)
-            print(f'Withdrew {amount}, new balance is {account.account}')
+def withdraw_task(account, amount):
+    for _ in range(5):
+        account.withdraw(amount)
 
 
 account = BankAccount()
 
-deposit_thread = Thread(target=deposit_task, args=(account.account, 100,))
-withdraw_thread = Thread(target=withdraw_task, args=(account.account, 150))
+deposit_thread = Thread(target=deposit_task, args=(account, 100,))
+withdraw_thread = Thread(target=withdraw_task, args=(account, 150))
 
 deposit_thread.start()
 withdraw_thread.start()
