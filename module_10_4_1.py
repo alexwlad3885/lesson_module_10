@@ -1,5 +1,3 @@
-"""Домашнее задание по теме 'Очереди для обмена данными между потоками.'"""
-
 import threading
 import queue
 from time import sleep
@@ -61,6 +59,7 @@ class Cafe:
 
 
 if __name__ == '__main__':
+
     # Создаем столики в кафе
     table1 = Table(1)
     table2 = Table(2)
@@ -68,7 +67,7 @@ if __name__ == '__main__':
     tables = [table1, table2, table3]
     #
     # # Инициализируем кафе
-    cafe = Cafe(tables)  #
+    cafe = Cafe(tables)    #
     #
     # Запускаем поток для прибытия посетителей
     customer_arrival_thread = threading.Thread(target=cafe.customer_arrival)
